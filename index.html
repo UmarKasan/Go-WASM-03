@@ -69,10 +69,16 @@
     <button id="restart">New Game</button>
     <script src="wasm_exec.js"></script>
     <script>
+        console.log("Script loaded, starting WebAssembly...");
         const go = new Go();
         WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject)
-            .then((result) => {
+            .then(result => {
+                console.log("WebAssembly instantiated successfully");
                 go.run(result.instance);
+                console.log("Go program started");
+            })
+            .catch(err => {
+                console.error("Error loading WebAssembly:", err);
             });
     </script>
 </body>
