@@ -51,6 +51,14 @@
             background: #45a049;
         }
     </style>
+    <script src="wasm_exec.js"></script>
+    <script>
+        const go = new Go();
+        WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject)
+            .then((result) => {
+                go.run(result.instance);
+            });
+    </script>
 </head>
 <body>
     <h1>Tic Tac Toe</h1>
@@ -65,21 +73,7 @@
         <div class="cell" data-index="7"></div>
         <div class="cell" data-index="8"></div>
     </div>
-    <div id="status">Your turn (X)</div>
+    <div id="status"></div>
     <button id="restart">New Game</button>
-    <script src="wasm_exec.js"></script>
-    <script>
-        console.log("Script loaded, starting WebAssembly...");
-        const go = new Go();
-        WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject)
-            .then(result => {
-                console.log("WebAssembly instantiated successfully");
-                go.run(result.instance);
-                console.log("Go program started");
-            })
-            .catch(err => {
-                console.error("Error loading WebAssembly:", err);
-            });
-    </script>
 </body>
 </html>
